@@ -22,7 +22,7 @@ threading.Thread(target=run_healthcheck, daemon=True).start()
 # ==========================================
 # SOZLAMALAR
 # ==========================================
-API_TOKEN = '7788275263:AAEK3czOJjFBFv-gWWZT6rPftnFwfM1hZGk'
+API_TOKEN = '8262324385:AAGfgpA1GURViIJf4lmoG33IXNfUHOy05HY'
 bot = telebot.TeleBot(API_TOKEN)
 
 FILE_NAME = 'questions.txt'
