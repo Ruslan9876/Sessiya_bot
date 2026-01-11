@@ -3,7 +3,22 @@ from telebot import types
 import time
 import re
 import random  # Tasodifiy tanlash uchun
+import threading
+import os
+from http.server import HTTPServer, BaseHTTPRequestHandler
 
+class HealthHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"OK")
+
+def run_healthcheck():
+    port = int(os.environ.get("PORT", 8000))
+    server = HTTPServer(("0.0.0.0", port), HealthHandler)
+    server.serve_forever()
+
+threading.Thread(target=run_healthcheck, daemon=True).start()
 # ==========================================
 # SOZLAMALAR
 # ==========================================
