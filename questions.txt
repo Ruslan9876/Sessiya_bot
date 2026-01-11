@@ -1,0 +1,876 @@
+1. Raqamli tasvirni ishlash (RTI) ning asosiy obyekti nima?
+#Raqamli tasvir
+• Uzluksiz analog signal
+• Grafik elementlar majmuasi
+• Ikkilangan ma'lumotlar bazasi
+
+2. RTI uchun asosiy manba bo'lib xizmat qiladigan qurilma qaysi?
+#Raqamli kamera va skaner
+• An'anaviy plyonkali fotosurat
+• Standart analog osilograf
+• Akustik datchik va mikrofon
+
+3. RTI ning tibbiyotdagi qo'llanishiga misol keltiring
+#MRT va rentgen diagnostikasi
+• Moliyaviy oqimlarni boshqarish
+• Kompyuter o'yinlarini ishlab chiqish
+• Seysmik faollikni tahlil qilish
+
+4. Raqamli tasvirni ishlash jarayoni qaysi bosqichdan boshlanadi?
+#Tasvirni olish va raqamlashtirish
+• Yaxshilash va tiklash bosqichlari
+• Siqish va saqlash amaliyoti
+• Obrazlarni avtomatik aniqlash
+
+5. Tasvirni yaxshilash bosqichi nimani anglatadi?
+#Subyektiv idrok uchun ko'rinishini o'zgartirish
+• Modelga asoslanib shovqinni bartaraf etish
+• Tasvirni ma'noli hududlarga bo'lish
+• Tasvir faylining hajmini kamaytirish
+
+6. Tasvirni segmentlashning asosiy maqsadi nima?
+#Tasvirni ma'noli hududlarga bo'lish
+• Umumiy yorqinlikni oshirish
+• Rang balansini to'g'rilash
+• Shovqin darajasini kamaytirish
+
+7. Tasvirni tiklash (restovratsiyalash) bosqichi nimani o'z ichiga oladi?
+#Degaradatsiya va shovqinni bartaraf etish
+• Kontrastni o'zgartirish
+• Rang palitrasini o'zgartirish
+• Logarifmik almashtirishni qo'llash
+
+8. RTI qayerda mahsulot sifatini avtomatik nazorat qilish uchun qo'llaniladi?
+#Sanoat ishlab chiqarish va defektoskopiy
+• Astronomiya va sayyoralarni o'rganish
+• Dasturiy ta'minotni ishlab chiqish
+• Iqlim o'zgarishlarini tahlil qilish
+
+9. RTI jarayonida eng oxirgi amalga oshiriladigan bosqich qaysi?
+#Obrazni aniqlash va tushunish
+• Tasvirni olish va raqamlashtirish
+• Tasvirni segmentlash
+• Tasvirni tiklash
+
+10. Tasvirni diskretlash (namunalash) nima?
+#Fazoviy kataklarga (piksel) bo'lish
+• Yorqinlikni diskret darajalarga o'tkazish
+• Rang modelini o'rnatish
+• Tasvirdan shovqinni olib tashlash
+
+11. Tasvirni kvantlash nima?
+#Yorqinlikni diskret darajalarga o'tkazish
+• Tasvirni piksellarga bo'lish
+• Ruxsatni o'zgartirish
+• Geometrik buzilishlarni to'g'rilash
+
+12. Raqamli tasvirdagi yorqinlikning diskret darajalari sonini qaysi parametr belgilaydi?
+#Rang chuqurligi (pikselga bit)
+• Fazoviy ruxsat
+• Piksel koordinatalari
+• Vaqtinchalik chastot
+
+13. Odam ko'zida kolbachalar nimani qabul qiladi?
+#Rang
+• Xira yorug'likdagi yorqinlik
+• Harakat
+• Masof
+
+14. p(x, y) pikselning 4 ta to'g'ri qo'shnilari bilan qo'shniligi qanday ataladi?
+#N4-qo'shnilik
+• N8-qo'shnilik
+• Diagonal qo'shnilik
+• Fazoviy qo'shnilik
+
+15. Tasvirning chiziqli taqdimoti nimani bilan tavsiflanadi?
+#Chiqish pikseli kirish pikselining chiziqli kombinatsiyasi bo'ladi
+• Faqat chegaraviy (poроговый) almashtirishlarni qo'llash
+• Nolinear funksiyalarni qo'llash
+• Faqat chastota sohasida ishlash
+
+16. Raqamli tasvir f(x, y) uchun qanday matematik model ishlatiladi?
+#Diskret ikki o'lchovli funksiy
+• Uzluksiz bir o'lchovli funksiy
+• Kompleks sonlarga ega vektor
+• Og'irlik koeffitsientlari matritsasi
+
+17. Past diskretlash (past ruxsat) nimaga olib keladi?
+#Mayda detallarning yo'qolishi (aliasing)
+• Rang chuqurligining oshishi
+• Shovqin darajasining pasayishi
+• Rang uzatishning kuchayishi
+
+18. Past kvantlash (kichik rang chuqurligi) nimaga olib keladi?
+#Soxta konturlarning paydo bo'lishi (posterizatsiya)
+• Tasvir tiniqligining oshishi
+• Fayl hajmining oshishi
+• Impulsli shovqinni olib tashlash
+
+19. Yorqinlikning qaysi almashtirishi qorong'u sohalarni yorug'ga va aksincha o'zgartiradi?
+#Negativ almashtirish
+• Logarifmik almashtirish
+• Darajali almashtirish
+• Chegaraviy filtrlash
+
+20. Logarifmik almashtirish s = c \log(1+r) nimaga qo'llaniladi?
+#Qorong'u sohalarning dinamik diapazonini kengaytirish
+• Yorug' sohalarning kontrastini oshirish
+• Impulsli shovqinni bartaraf etish
+• Gistogrammani tekislash
+
+21. Negativ yorqinlik almashtirishi uchun qaysi formula ishlatiladi (L darajalar uchun)?
+#s = L - 1 - r
+• s = c \log(1+r)
+• s = c r^\gamma
+• s = \mu + \sigma
+
+22. Darajali (gamma) almashtirish s = c r^\gamma nima?
+#Nolinear gamma korreksiyasi
+• Kontrastni chiziqli korreksiyasi
+• Chegaraviy almashtirish
+• Inverttik almashtirish
+
+23. Yorqinlikning qaysi almashtirishi tor yorqinlik diapazoniga e'tibor qaratib, kontrastni oshirish uchun ishlatiladi?
+#Bo'lak-chiziqli (kontrastni cho'zish)
+• Logarifmik almashtirish
+• Negativ almashtirish
+• Chegaraviy filtrlash
+
+24. Gаmmа-kоrrеksiya \gamma < 1 bo'lganda tasvir bilan nima sodir bo'ladi?
+#Tasvir yorug'roq bo'ladi
+• Tasvir qorong'uroq bo'ladi
+• Kontrast pasayadi
+• Tasvir inversiyalanadi
+
+25. Chegaraviy (poроговый) filtrlash nima?
+#Pikselga chegaraga qarab ikkita qiymatdan birini berish
+• Qo'shni piksellarning yorqinligini o'rtachalash
+• Darajali almashtirishni qo'llash
+• Median filtr yordamida shovqinni olib tashlash
+
+26. Yorqinlik filtrlashi nimadan iborat?
+#Piksel yorqinligini uning qiymatiga qarab o'zgartirish
+• Piksel yorqinligini qo'shnilarning qiymatiga qarab o'zgartirish
+• Rang balansini o'zgartirish
+• Tasvirni siqish
+
+27. Inverttik chiziqli almashtirish (ya'ni, negativ) qo'llanilganda tasvirning kontrasti bilan nima sodir bo'ladi?
+#Kontrast saqlanadi
+• Kontrast pasayadi
+• Kontrast har doim oshadi
+• Tasvir monoxrom bo'ladi
+
+28. Raqamli tasvirning gistogrammasi nimani aks ettiradi?
+#Yorqinlik darajalarining taqsimlanishini
+• Ikki o'lchovli Fur'ye spektrini
+• Fazoviy ruxsatni
+• Og'irlik koeffitsientlari matritsasini
+
+29. Gistogramma ko'rinishiga qarab nimani baholash mumkin?
+#Kontrast va dinamik diapazonni
+• Ob'ektlarning fazoviy koordinatalarini
+• Geometrik buzilishlarni
+• Davriy shovqin darajasini
+
+30. Gistogrammani tekislash (ekvalizatsiya) ning asosiy maqsadi nima?
+#Yorqinlik darajalarini mavjud diapazon bo'ylab taqsimlash
+• Yorqinlik darajalarini qorong'u sohaga surish
+• Umumiy yorqinlik darajalari sonini kamaytirish
+• Yuqori chastotalarni kuchaytirish
+
+31. Tor diapazonda to'plangan gistogramma nimani bildiradi?
+#Past kontrastni
+• Yuqori kontrastni
+• Bir tekis yoritishni
+• Inversiyalangan tasvirni
+
+32. Qaysi amal tasvirning gistogrammasini oldindan berilgan shaklga keltirish imkonini beradi?
+#Gistogramma spetsifikatsiyasi
+• Gistogrammani tekislash
+• Chiziqli cho'zish
+• Negativ almashtirish
+
+33. Chegaralarni kuchaytirish (Edge Enhancement) gistogrammalar bilan ishlashda nimaga ishlatiladi?
+#Konturlar yaqinida kontrastni oshirish
+• Tasvirni umumiy tekislash
+• Impulsli shovqinni olib tashlash
+• Rang modelini o'zgartirish
+
+34. Gistogrammani to'liq diapazonga cho'zish bilan nima sodir bo'ladi?
+#Kontrast oshadi
+• Kontrast pasayadi
+• Yorqinlik kamayadi
+• "Qo'ng'iroq" effekti paydo bo'ladi
+
+35. Gistogrammaning vertikal o'qi nimani ko'rsatadi?
+#Berilgan yorqinlik darajasiga ega piksellar soni
+• Yorqinlik darajasining qiymatini
+• Fazoviy koordinatani
+• Diskretlash chastotasini
+
+36. Global gistogrammani tekislashda qanday kamchilik paydo bo'lishi mumkin?
+#Bir xil sohalarda shovqinning kuchayishi
+• Umumiy yorqinlikning pasayishi
+• Dinamik diapazonning siqilishi
+• Chegaralarning xiralashishi
+
+37. Tekislovchi (smoothing) filtrlarning asosiy maqsadi nima?
+#Shovqinni kamaytirish va detallarni xiralashtirish
+• Tiniqlikni oshirish (chegaralarni kuchaytirish)
+• Yorqinlikni inversiyalash
+• Gistogrammani tekislash
+
+38. Chiziqli tekislovchi filtrlar nima?
+#Qo'shni piksellarning chiziqli kombinatsiyasidan foydalanadigan filtrlar
+• Nolinear funksiyalarni qo'llaydigan filtrlar
+• Faqat chastota sohasida ishlaydigan filtrlar
+• Faqat medianadan foydalanadigan filtrlar
+
+39. Eng keng tarqalgan chiziqli tekislovchi filtr qaysi?
+#O'rtacha qiymat filtri (Box Filter)
+• Median filtri
+• Maksimum filtri
+• Laplas filtri
+
+40. Chiziqli filtrning maskasi (yadrosi) nimani anglatadi?
+#Og'irlik koeffitsientlari matritsasi
+• Tasvir piksellari matritsasi
+• Yorqinlik gistogrammasi
+• Fazoviy koordinat
+
+41. Chiziqli tekislovchi filtrlarning asosiy kamchiligi nima?
+#Chegaralar va detallarni xiralashtirish
+• Shovqinni kamaytira olmaslik
+• Past hisoblash murakkabligi
+• Impulsli shovqinni kuchaytirish
+
+42. Nolinear tekislovchi filtrlar nima?
+#Piksellar ustida nolinear amallardan (masalan, tartib) foydalanadigan filtrlar
+• Faqat o'rtachalashdan foydalanadigan filtrlar
+• Og'irlik koeffitsientlari bilan ishlaydigan filtrlar
+• Faqat chastota sohasida ishlaydigan filtrlar
+
+43. Eng keng tarqalgan nolinear tekislovchi filtr qaysi?
+#Median filtri
+• O'rtacha qiymat filtri
+• Gauss filtri
+• Laplas filtri
+
+44. Median filtri shovqinning qaysi turini samarali bartaraf etadi?
+#Impulsli (tuz va murch) shovqin
+• Gauss shovqini
+• Davriy shovqin
+• Additiv bir tekis shovqin
+
+45. Gauss filtri nimani anglatadi?
+#Og'irliklari Gauss qonuni bo'yicha taqsimlangan chiziqli filtr
+• Impulsli shovqinni olib tashlaydigan nolinear filtr
+• Chastotalar bilan ishlaydigan filtr
+• Chegaraviy almashtirishni bajaradigan filtr
+
+46. Tasvirni chastota sohasiga o'tkazish uchun qaysi matematik almashtirish ishlatiladi?
+#Fur'ye almashtirishi (FA)
+• Logarifmik almashtirish
+• Gamma-korreksiy
+• Veyvlet-almashtirish
+
+47. Tasvirning Fur'ye spektrida past chastotalar nimaga mos keladi?
+#Yorqinlikning sekin o'zgarishi (asosiy fon)
+• Keskin chegaralar va mayda detallar
+• "Tuz va murch" tipidagi shovqin
+• Davriy shovqin
+
+48. Chastota sohasidagi past chastotali filtrlarning asosiy maqsadi nima?
+#Tekislash va shovqinni olib tashlash
+• Tiniqlikni oshirish
+• Chegaralarni kuchaytirish
+• Negativga o'tkazish
+
+49. Qaysi past chastotali filtr o'tkaziluvchi va so'ndiriluvchi chastotalar orasida silliq o'tishga ega bo'lib, "qo'ng'iroq" effektini kamaytiradi?
+#Bottervord past chastotali filtri
+• Ideal Past chastotali filtr
+• Gauss yuqori chastotali filtri
+• Laplas filtri
+
+50. Chastota sohasidagi spektrlarni ko'paytirish fazoviy sohada qaysi amalga ekvivalent?
+#O'rama (Convolution)
+• Qo'shish
+• Ayirish
+• O'rtachalash
+
+51. Fur'ye spektrida yuqori chastotalar nimaga mos keladi?
+#Mayda detallar va chegaralar
+• Umumiy fon va yoritish
+• Doimiy komponent
+• O'rtacha yorqinlik
+
+52. Qaysi past chastotali filtr chastota sohasida Gauss qo'ng'irog'i shakliga ega?
+#Gauss filtri
+• Bottervord filtri
+• Ideal filtr
+• Laplas filtri
+
+53. Kesish chastotasi D_0 chastotali filtrda nima?
+#O'tkazish/so'ndirish chegarasini aniqlovchi radius
+• Pikselning maksimal yorqinligi
+• Filtr maskasining o'lchami
+• Kuchaytirish koeffitsienti
+
+54. Chastota sohasida filtrlashning fazoviy sohadagi filtrlashdan ba'zan afzalroq bo'lishining sababi nima?
+#Global ishlov berish
+• Lokal ishlov berish
+• Oddiy amalga oshirish
+• "Qo'ng'iroq" effekti yo'qligi
+
+55. Chastota sohasidagi yuqori chastotali filtrlarning asosiy maqsadi nima?
+#Tiniqlikni oshirish (chegaralarni kuchaytirish)
+• Tekislash va shovqinni olib tashlash
+• Kontrastni kamaytirish
+• Gistogrammani tekislash
+
+56. Yuqori chastotali filtr H_{YCh}(u, v) ni past chastotali filtr H_{PCh}(u, v) dan qanday olish mumkin?
+#H_{YCh}(u, v) = 1 - H_{PCh}(u, v)
+• H_{YCh}(u, v) = H_{PCh}(u, v) + 1
+• H_{YCh}(u, v) = H_{PCh}(u, v) / 2
+• H_{YCh}(u, v) = \log(H_{PCh}(u, v))
+
+57. Fazoviy sohada sanab o'tilgan operatorlardan qaysi biri YUCh-filtrlashga mos keladi?
+#Laplas filtri
+• O'rtacha qiymat filtri
+• Median filtri
+• Gauss filtri
+
+58. Qaysi YUCh-filtr silliq o'tishga ega va "qo'ng'iroq" effektini kamaytiradi?
+#Gauss yuqori chastotali filtri
+• Ideal YUCh-filtr
+• Laplas filtri
+• Bottervord past chastotali filtri
+
+59. YUCh-filtrlarni qo'llashda yuzaga keladigan asosiy muammo qaysi?
+#Shovqinning kuchayishi
+• Tasvirning xiralashishi
+• Kontrastning pasayishi
+• Chegaralarni aniqlay olmaslik
+
+60. Laplas filtri RTI da nimani anglatadi?
+#Chegaralarni ajratish uchun ikkinchi tartibli operator
+• Yorqinlikni o'rtachalash operatori
+• Impulsli shovqinni olib tashlash operatori
+• Gistogrammani tekislash operatori
+
+61. Nima uchun YUCh-filtrlari tasvir tiniqligini oshiradi?
+#Yuqori chastotali komponentlarni kuchaytirish orqali (chegaralar)
+• Yuqori chastotali komponentlarni so'ndirish orqali
+• Piksellarning yorqinligini o'rtachalash orqali
+• Spektr fazasini o'zgartirish orqali
+
+62. Bottervord yuqori chastotali filtrining xususiyati qanday?
+#O'tish keskinligini nazorat qiluvchi tartib (daraja) ga eg
+• Past chastotalarni keskin uzib qo'yish
+• Yuqori chastotalarni silliq so'ndirish
+• Faqat fazoviy sohada qo'llash
+
+63. Nolinchi chastota YUCh-filtr tomonidan to'liq so'ndirilsa, tasvir bilan nima sodir bo'ladi?
+#Tasvir kulrang bo'lib qoladi
+• Tasvir juda yorug' bo'lib qoladi
+• Kontrast pasayadi
+• Chegaralar yo'qoladi
+
+64. Tasvirni restovratsiyalashning asosiy maqsadi nima?
+#Degaradatsiya va shovqinlarni model asosida bartaraf etish
+• Tashqi ko'rinishni subyektiv yaxshilash
+• Segmentlash va tasvirlash
+• Ma'lumotlar hajmini kamaytirish
+
+65. Sanab o'tilgan shovqinlardan qaysi biri additiv (qo'shiluvchi) hisoblanadi?
+#Gauss shovqini
+• Impulsli shovqin
+• Davriy shovqin
+• "Tuz va murch" shovqini
+
+66. Sanab o'tilgan shovqinlardan qaysi biri multiplikativ (ko'paytiriluvchi)?
+#Signal yorqinligiga bog'liq bo'lgan shovqin
+• Signalga bog'liq bo'lmagan shovqin
+• Nol o'rtachali shovqin
+• Har doim additiv bo'lgan shovqin
+
+67. Qaysi shovqin qora va oq piksellarning tasodifiy paydo bo'lishi bilan tavsiflanadi?
+#Impulsli (tuz va murch) shovqin
+• Gauss shovqini
+• Davriy shovqin
+• Bir tekis shovqin
+
+68. Davriy shovqinlarni olib tashlash uchun qaysi filtr ishlatiladi?
+#Polosali (Band Reject) chastotali filtr
+• O'rtacha qiymat filtri
+• Median filtri
+• Gauss filtri
+
+69. Xiralashgan tasvirlarni tiklash uchun ishlatiladigan o'rama (свертка) ga teskari jarayon qanday ataladi?
+#Dekonvolyutsiy
+• Kvantlash
+• Diskretlash
+• Segmentlash
+
+70. Viner filtrlashining asosiy g'oyasi nima?
+#Degaradatsiya modeli va shovqin statistikasi hisobga olingan holda tiklash
+• Faqat shovqinni olib tashlash
+• Faqat chegaralarni kuchaytirish
+• Faqat yorqinlikni to'g'rilash
+
+71. Tasvirning Degaradatsiyasi nima?
+#Olish yoki uzatish jarayonida tasvirning buzilishi
+• Kontrastning yaxshilanishi
+• Tiniqlikning oshishi
+• Tasvirni siqish
+
+72. Restovratsiyada to'g'ridan-to'g'ri teskari filtrning (Inverse Filter) muammosi nima?
+#Shovqinning kuchayishi
+• Chegaralarning xiralashishi
+• Kontrastning pasayishi
+• Past chastotalarning kuchayishi
+
+73. Adaptiv filtrlash nima?
+#Parametrlari mahalliy xususiyatlarga qarab o'zgaradigan filtrlash
+• Ruxsat etilgan parametrlar bilan filtrlash
+• Faqat chastota sohasida filtrlash
+• Faqat additiv shovqinni filtrlash
+
+74. Tasvirni tiklashda aprior ma'lumot nima?
+#Shovqin va asl tasvir haqidagi taxminlar
+• Tasvir o'lchami
+• Rang chuqurligi
+• Piksellar koordinatalari
+
+75. Davriy shovqinlar chastota sohasida nima bo'ladi?
+#Ular aniq cho'qqilar shaklida to'planadi
+• Ular bir tekis taqsimlanadi
+• Ular faqat past chastotalarga ta'sir qiladi
+• Ular faqat fazaga ta'sir qiladi
+
+76. Qaysi rang modeli additiv (yorug'likni aralashtirish) hisoblanadi?
+#RG
+• CMY
+• CMYK
+• HSI
+
+77. RGB modelida qaysi uchta asosiy rang ishlatiladi?
+#Qizil, Yashil, Moviy
+• Moviy, Pushti, Sariq
+• Tus, To'yinganlik, Yorqinlik
+• Qora, Oq, Kulrang
+
+78. Qaysi rang modeli subtraktiv (ayiruvchi, bo'yoqlarni aralashtirish) hisoblanadi?
+#CMY
+• RG
+• HSI
+• YIQ
+
+79. Qaysi rang modeli inson uchun eng intuitiv bo'lib, tasvirni yaxshilash uchun yaxshiroq mos keladi?
+#HSI (Tus, To'yinganlik, Yorqinlik)
+• RG
+• CMY
+• CMYK
+
+80. HSI modelida Tus (Hue) nimaga javobgar?
+#Dominant to'lqin uzunligi (rang)
+• Rangning sofligi
+• Yorqinlik yoki intensivlik
+• Qora bo'yoq miqdori
+
+81. Qaysi modelda Yorqinlik (Intensity) o'zgarishi tus va to'yinganlikka ta'sir qilmaydi?
+#HSI
+• RG
+• CMY
+• CMYK
+
+82. Pseudorangli tasvir nima?
+#Monoxrom tasvirga rang berish
+• Dastlab rangli kamera bilan olingan tasvir
+• RGB modelida ishlangan tasvir
+• Siqilgan rangli tasvir
+
+83. CMYK modelidan (Qora K qo'shilgan) nimaga foydalaniladi?
+#Chop etish
+• Kompyuter grafikasi
+• Televideniye
+• Shovqinni olib tashlash
+
+84. Rang kubi nima?
+#RGB rang modelining geometrik tasviri
+• Shovqinni olib tashlash filtri
+• Chastotali filtr turi
+• Morfologik tahlil amali
+
+85. HSI modelida rangning to'yinganligi oshirilganda nima sodir bo'ladi?
+#Rang sofroq, "oq" kamroq bo'ladi
+• Umumiy yorqinlik kamayadi
+• Tus siljiydi
+• Chegaralar kuchayadi
+
+86. Subtraktiv CMY modelida ishlatiladigan asosiy ranglar qaysi?
+#Moviy, Pushti, Sariq
+• Qizil, Yashil, Moviy
+• Qora, Oq, Kulrang
+• Tus, To'yinganlik, Yorqinlik
+
+87. HSI modelida Intensivlik (I) nima deb hisoblanadi?
+#R, G va B ning o'rtacha arifmetik qiymati
+• R va B orasidagi farq
+• R, G, B ning maksimal qiymati
+• R, G, B ning minimal qiymati
+
+88. Rangni aniqlash uchun RGB modeli qancha bit ishlatadi?
+#24 bit (8 bit har bir kanal uchun)
+• 8 bit (monoxrom uchun)
+• 1 bit (boshlang'ich uchun)
+• 16 bit (yarim rang uchun)
+
+89. Qaysi rang modelida faqat yorqinlik bilan ishlatib tekislash (shovqinni kamaytirish) qulay?
+#HSI (I-komponenta bilan ishlash)
+• RGB (har bir komponenta bilan ishlash)
+• CMY
+• CMYK
+
+90. Rangli tasvirning tiniqligini oshirish qanday amalga oshiriladi?
+#I-komponentaga yoki barcha RGB kanallariga YUCh-filtrlashni qo'llash
+• PCh-filtrlashni qo'llash
+• Faqat tusni o'zgartirish
+• Faqat to'yinganlikni o'zgartirish
+
+91. Rangli diapazonni kesish uchun qaysi amal ishlatiladi?
+#Tus va to'yinganlik bo'yicha segmentlash
+• Gistogrammani tekislash
+• Tasvirni tekislash
+• Negativ almashtirish
+
+92. Rangli tasvir uchun gistogrammalarni qayta ishlashning xususiyati nima?
+#H va S ni saqlash uchun HSI dagi I-komponentaga qo'llash
+• Faqat R-kanalga qo'llash
+• Faqat H-kanalga qo'llash
+• Faqat chastota sohasida qo'llash
+
+93. Rangli tasvirlardagi impulsli shovqinni olib tashlash uchun qaysi turdagi filtrlash eng mos keladi?
+#Vektorli median filtrlash
+• Chiziqli filtrlash
+• Laplasian
+• Yuqori chastotali filtrlash
+
+94. Rangning to'yinganligi oshirilganda nima sodir bo'ladi?
+#Rang sofroq, "oq" kamroq bo'ladi
+• Umumiy yorqinlik kamayadi
+• Tus siljiydi
+• Chegaralar kuchayadi
+
+95. Avtomatik rang korreksiyasi nima?
+#Har bir kanal yoki I-komponenta bo'yicha gistogrammani tekislash
+• Belgilangan filtrni qo'llash
+• Faqat bitta rang kanalidan foydalanish
+• Rang diapazonini kesish
+
+96. Yorqinlikni ranglikdan ajratish uchun qaysi almashtirish kerak?
+#RGB dan HSI g
+• HSI dan RGB g
+• CMY dan RGB g
+• RGB dan CMY g
+
+97. Monoxrom tasvirga rang qo'shish (Colorizing) uchun qaysi usul ishlatiladi?
+#Pseudorangli almashtirishni qo'llash
+• Median filtrni qo'llash
+• Gistogrammani tekislash
+• Tasvirni siqish
+
+98. Rangli tasvirni tekislash maqsadi nima?
+#Rangli shovqinni kamaytirish
+• Rangli kontrastni oshirish
+• Rang modelini o'zgartirish
+• Chegaralarni olib tashlash
+
+99. Tasvirlarni siqishning asosiy maqsadi nima?
+#Ma'lumotlar hajmini kamaytirish
+• Tiniqlikni oshirish
+• Shovqinni olib tashlash
+• Rang gamma-sini o'zgartirish
+
+100. Tasvirlarni siqishning ikkita asosiy turi qaysilar?
+#Yo'qotishli (Lossy) va yo'qotishsiz (Lossless)
+• Chiziqli va nolinear
+• Fazoviy va chastotali
+• Additiv va subtraktiv
+
+101. Yo'qotishsiz siqish nima?
+#Asl nusxani to'liq tiklash mumkin bo'lgan siqish
+• Ma'lumotning bir qismi yo'qoladigan siqish
+• Faqat chastota sohasidan foydalanadigan siqish
+• Faqat kvantlashdan foydalanadigan siqish
+
+102. Qaysi usul yo'qotishsiz siqish usuli hisoblanadi?
+#Seriya uzunliklarini kodlash (Run-Length Encoding, RLE)
+• DCT (diskret kosinus almashtirish)
+• Kvantlash
+• Veyvlet-almashtirish
+
+103. Qaysi siqish formati yo'qotishli standart hisoblanadi?
+#JPEG
+• PNG
+• GIF
+• BMP
+
+104. JPEG algoritmining qaysi qismi ma'lumotlarning yo'qolishiga olib keladi?
+#DCT-koeffitsientlarini kvantlash
+• Fur'ye almashtirishi
+• Xaffman-kodlash
+• RLE-kodlash
+
+105. Diskret Kosinus Almashtirishi (DCT) qaysi tamoyilga asoslangan?
+#Tasvir energiyasini kam sonli past chastotali koeffitsientlarga jamlash
+• Faqat bitta rang kanalidan foydalanish
+• Chastotaning oshishi
+• Yuqori chastotalarni so'ndirish
+
+106. Entropiyali kodlash nima?
+#Belgilarning paydo bo'lish statistikasi asosida (yo'qotishsiz) kodlash
+• Har doim yo'qotishlarga olib keladigan kodlash
+• Faqat DCT dan foydalanadigan kodlash
+• Faqat rang ma'lumotlarini kodlash
+
+107. Psixovizual ortiqchalik nima?
+#Ko'z qabul qilmaydigan va tashlab yuborilishi mumkin bo'lgan ma'lumot
+• Rang haqidagi ma'lumot
+• Yorqinlik haqidagi ma'lumot
+• Shovqin haqidagi ma'lumot
+
+108. Qaysi siqish standarti veyvlet-almashtirishga asoslangan?
+#JPEG 2000
+• JPEG
+• GIF
+• BMP
+
+109. Morfologik tasvirni ishlash nima?
+#Ob'ektlarning shakliga asoslangan (to'plamlar nazariyasi) ishlash
+• Chastotali tahlilga asoslangan ishlash
+• O'rtachalashga asoslangan ishlash
+• Gradiyentga asoslangan ishlash
+
+110. Morfologik ishlov berishda asosiy element nima?
+#Strukturaviy element (Structuring Element, SE)
+• Gauss filtri
+• Fur'ye spektri
+• Gistogramm
+
+111. Eroziya (Erosion) amali nima?
+#Ob'ekt chegaralarini siqish yoki ingichkalash
+• Ob'ekt chegaralarini kengaytirish yoki qalinlashtirish
+• Shovqinni olib tashlash
+• Chegaralarni ajratish
+
+112. Dilatatsiya (Dilation) amali bajarilganda nima sodir bo'ladi?
+#Ob'ekt chegaralarini kengaytirish yoki qalinlashtirish
+• Ob'ekt chegaralarini siqish yoki ingichkalash
+• Chegaralarni ajratish
+• Shovqinni olib tashlash
+
+113. Morfologik ishlov berishda Ikkilanganlik (Duality) nima?
+#Ob'ekt eroziyasi fon dilatatsiyasiga ekvivalent (va aksincha)
+• Chiziqli va nolinear almashtirishlar
+• Fazoviy va chastotali sohalar
+• Additiv va subtraktiv ranglar
+
+114. Avval Eroziya, so'ngra Dilatatsiyaning ketma-ket qo'llanilishi qanday amal deb ataladi?
+#Ochish (Opening)
+• Yopish (Closing)
+• Gradiyent
+• Ayirish
+
+115. Yopish (Closing) morfologik amali uchun asosiy maqsad nima?
+#Kichik teshiklarni to'ldirish va konturlarni tekislash
+• Mayda chiqishlarni olib tashlash
+• Chegaralarni ajratish
+• Impulsli shovqinni olib tashlash
+
+116. Qora fondagi oq shovqinni (yakka piksellar) olib tashlash uchun qaysi amal ishlatiladi?
+#Ochish
+• Yopish
+• Dilatatsiy
+• Eroziy
+
+117. Morfologik ishlov berish uchun eng ko'p ishlatiladigan tasvir turi qaysi?
+#Ikkilik (Binary) tasvir
+• Rangli tasvir
+• Yarim tonli tasvir
+• Uch o'lchovli tasvir
+
+118. Morfologiyada ob'ektning chegaralarini belgilash (ajratish) uchun qaysi amal ishlatiladi?
+#Dastlabki tasvirdan erozialangan tasvirni ayirish
+• Yopish amalining qo'llanilishi
+• Ochish amalining qo'llanilishi
+• Dastlabki tasvirni dilatalangan tasvirga qo'shish
+
+119. Morfologiyada Toraytirish (Thinning) amalining maqsadi nima?
+#Ob'ektni skeletgacha ingichkalash (bir piksel kengligida)
+• Ob'ektni kengaytirish
+• Teshiklarni to'ldirish
+• Chegaralarni ajratish
+
+120. Teshiklarni to'ldirish morfologik algoritmi nima?
+#Dilatatsiya va Ochish amalini inversiya bilan ketma-ket qo'llash
+• Eroziya amalini qo'llash
+• O'rtacha qiymat filtri yordamid
+• Chegaralarni ajratish
+
+121. Morfologiyada Bog'langan komponentlarni belgilash nima?
+#Bog'langan piksellar klasterlarini aniqlash va markalash
+• Chegaralarni ajratish
+• Shovqinni olib tashlash
+• Tasvirni tekislash
+
+122. Morfologiyada Kengaytirish (Thickening) amalining maqsadi nima?
+#Ob'ektni qalinlashtirish
+• Ob'ektni skeletgacha ingichkalash
+• Teshiklarni to'ldirish
+• Chegaralarni ajratish
+
+123. Tasvirni skeletlashtirish uchun qaysi morfologik almashtirish kerak?
+#Toraytirish (Thinning)
+• Kengaytirish (Thickening)
+• Dilatatsiy
+• Eroziy
+
+124. Tasvirdagi ob'ektlarni sanash uchun qaysi amal ishlatiladi?
+#Bog'langan komponentlarni belgilash
+• Eroziy
+• Yopish
+• Tekislash
+
+125. Ob'ektning o'lchami ko'p marta Eroziya qilinganda nima bo'ladi?
+#Ob'ekt o'lchami kamayadi
+• Ob'ekt o'lchami oshadi
+• Ob'ekt o'lchami o'zgarmaydi
+• Ob'ekt negativ bo'ladi
+
+126. Konturdagi kichik uzilishlarni to'ldirish uchun qaysi amal ishlatiladi?
+#Yopish
+• Ochish
+• Eroziy
+• Toraytirish
+
+127. Morfologik gradiyent nima?
+#Dilatatsiya va eroziya orasidagi farq
+• Ochish va yopish orasidagi farq
+• Asl va erozialangan orasidagi farq
+• Asl va dilatalangan orasidagi farq
+
+128. Ochish (Opening) natijasi nima?
+#Mayda chiqishlarsiz tasvirning tekislangan versiyasi
+• Tasvirning kengaytirilgan versiyasi
+• Skeletlashtirilgan versiyasi
+• Ajratilgan chegaralar
+
+129. Tasvirni segmentlash nima?
+#Tasvirni ma'noli hududlarga bo'lish
+• Shovqinni olib tashlash
+• Tiniqlikni oshirish
+• Ma'lumotlarni siqish
+
+130. Tasvirdagi konturlarni (qirralarni) ajratish uchun qaysi operator ishlatiladi?
+#Gradiyent operatori (Sobel, Prewitt, Roberts)
+• O'rtacha qiymat filtri
+• Median filtri
+• Gauss filtri
+
+131. Binarizatsiya uchun ishlatiladigan eng oddiy segmentlash usuli qaysi?
+#Chegaraviy ishlov berish (Thresholding)
+• Median filtrlash
+• Fur'ye almashtirishi
+• Eroziy
+
+132. Tasvirning gradiyenti nima?
+#Yorqinlikning eng katta o'zgarish yo'nalishi va tezligini ko'rsatuvchi vektor
+• O'rtacha yorqinlik qiymati
+• Chastotali spektr
+• Gistogramm
+
+133. Hududlarni o'stirish (Region Growing) bo'yicha segmentlash qaysi tamoyilga asoslangan?
+#O'xshash xususiyatlarga ega qo'shni piksellarni birlashtirish
+• Tasvirni chegaralar bo'yicha bo'lish
+• Chegaraviy ishlov berishdan foydalanish
+• Morfologik amallarni qo'llash
+
+134. Farqlarni aniqlash bo'yicha segmentlashning maqsadi nima?
+#Ikki tasvir orasida o'zgargan sohalarni ajratish
+• Shovqinni olib tashlash
+• Tiniqlikni oshirish
+• Rang balansini o'zgartirish
+
+135. Savir: Tasvirdagi to'g'ri chiziqlarni aniqlash uchun qaysi algoritm ishlatiladi?
+#Xaf almashtirishi (Hough Transform)
+• Fur'ye almashtirishi
+• Gilbert almashtirishi
+• Logarifmik almashtirish
+
+136. "Suv havzasi" (Watershed Segmentation) usuli nima?
+#Tasvirni topografik relyef sifatida tasvirlashga asoslangan segmentlash
+• Chegaraviy ishlov berish bo'yicha segmentlash
+• Rang bo'yicha segmentlash
+• Median filtr yordamida segmentlash
+
+137. Adaptiv chegaraviy ishlov berish nima?
+#Chegaraviy qiymat mahalliy sohaga qarab o'zgaradi
+• Chegaraviy qiymat butun tasvir uchun qat'iy belgilangan
+• Chegaraviy qiymat o'rtachaga teng
+• Chegaraviy qiymat medianaga teng
+
+138. Segmentlashda bir xillik (gomohenlik) mezoni sifatida nima ishlatiladi?
+#Yorqinlik, rang, tekstur
+• Fayl o'lchami
+• Ruxsat
+• Fazoviy koordinat
+
+139. Qaysi operator nuqta detektori hisoblanadi?
+#Laplasian
+• Sobel
+• Median
+• O'rtachalash
+
+140. Bo'lish va birlashtirish (Split and Merge) bo'yicha segmentlash nima?
+#Kvadr daraxtga asoslangan ierarxik usul
+• Faqat chegaraviy ishlov berishdan foydalanadigan usul
+• Faqat morfologiyadan foydalanadigan usul
+• Chastotali tahlilga asoslangan usul
+
+141. Gradiyentning moduli nimani o'lchaydi?
+#Chegaraning kuchi (intensivligi)
+• Chegara yo'nalishi
+• Fon yorqinligi
+• Shovqin darajasi
+
+142. Kanni detektori qanday afzallikka ega?
+#Yaxshi lokalizatsiya va shovqinni bartaraf etish
+• Yuqori ish tezligi
+• Faqat birinchi tartibdan foydalanish
+• Faqat ikkilik tasvirlarga qo'llash
+
+143. Lokal chegaraviy ishlov berish nima?
+#Har bir kichik oyna uchun chegarani aniqlash
+• Butun tasvir uchun chegarani aniqlash
+• Chastota sohasida chegaraviy ishlov berish
+• Faqat rangli tasvirlarga qo'llash
+
+144. Chiziqlarni segmentlash nimaga asoslangan?
+#Ma'lum yo'nalishlarga sezgir maskalardan foydalanish
+• Aylanma maskalardan foydalanish
+• Median filtrni qo'llash
+• Yopish amalini qo'llash
+
+145. Chegara detektorlarida non-maksimumlarni so'ndirish maqsadi nima?
+#Aniqlangan qirralarni bir piksel kengligiga ingichkalash
+• Aniqlangan qirralarni qalinlashtirish
+• Shovqinni olib tashlash
+• Teshiklarni to'ldirish
+
+146. Nuqtalarni aniqlash nima?
+#Atrof-muhitdan keskin farq qiluvchi yakka piksellarni ajratish
+• To'g'ri chiziqlarni ajratish
+• Sohalarni ajratish
+• Shovqinni olib tashlash
+
