@@ -226,4 +226,4 @@ def finish_quiz(chat_id):
     del user_data[chat_id]
 
 if __name__ == '__main__':
-    bot.infinity_polling(timeout=False,long_polling_timeout=False)
+    bot.polling(none_stop=True)
