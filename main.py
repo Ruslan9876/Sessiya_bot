@@ -55,66 +55,69 @@ users_data = {}
 # -----------------------------------------------------------------------------
 # DOCX O'QISH FUNKSIYASI
 # -----------------------------------------------------------------------------
-def load_questions_from_docx(filename):
-    """
-    DOCX fayldan savollarni o'qib, strukturalashgan ko'rinishga keltiradi.
-    """
-    if not os.path.exists(filename):
-        return None
-
-    doc = Document(filename)
-    questions = []
-    
-    current_question = None
-    
-    # Regex na'munalari
-    # 1. , 2. kabi raqam bilan boshlanishini tekshirish
-    question_pattern = re.compile(r'^\d+\.') 
-    # A), B) kabi variantlarni tekshirish
-    option_pattern = re.compile(r'^[A-D]\)')
-
-    for para in doc.paragraphs:
-        text = para.text.strip()
-        if not text:
-            continue
-
-        # Agar yangi savol boshlansa (Raqam va nuqta bilan)
-        if question_pattern.match(text):
-            # Eski savolni ro'yxatga qo'shamiz (agar mavjud bo'lsa)
-            if current_question:
-                questions.append(current_question)
-            
-            # Yangi savol obyektini yaratamiz
-            # "1. Savol matni" -> "Savol matni" (raqamni olib tashlaymiz)
-            q_text = re.sub(r'^\d+\.\s*', '', text)
-            current_question = {
-                'text': q_text,
-                'options': [],
-                'correct_option_id': -1 # Hozircha noma'lum
-            }
+def load_questions_from_docx(file_path):
+    try:
+        doc = Document(file_path)
+        questions = []
+        current_question = None
         
-        # Agar variant bo'lsa (A), B) ...)
-        elif option_pattern.match(text) and current_question is not None:
-            # To'g'ri javobligini tekshirish (# belgisi borligi)
-            is_correct = '#' in text
-            
-            # Variant matnidan A), B) va # belgilarni tozalash
-            # "A)# Javob" -> "Javob"
-            # 1. A), B) ni olib tashlash
-            opt_text = re.sub(r'^[A-D]\)\s*', '', text)
-            # 2. # ni olib tashlash
-            opt_text = opt_text.replace('#', '').strip()
-            
-            current_question['options'].append({
-                'text': opt_text,
-                'is_correct': is_correct
-            })
+        # Regex na'munalari
+        question_pattern = re.compile(r'^(\d+)\.\s*(.*)') # "1. Savol matni"
+        option_pattern = re.compile(r'^([A-D])\)\s*(.*)')  # "A) Variant matni"
 
-    # Oxirgi savolni qo'shish
-    if current_question:
-        questions.append(current_question)
-        
-    return questions
+        for para in doc.paragraphs:
+            text = para.text.strip()
+            if not text:
+                continue
+
+            # 1. YANGI SAVOLNI ANIQLASH
+            q_match = question_pattern.match(text)
+            if q_match:
+                # Agar eski savol bo'lsa, uni ro'yxatga qo'shamiz
+                if current_question:
+                    questions.append(current_question)
+                
+                # Yangi savol obyekti
+                current_question = {
+                    'number': int(q_match.group(1)),
+                    'question': q_match.group(2),
+                    'options': [],
+                    'correct_answer_text': None
+                }
+                continue
+
+            # 2. VARIANTLARNI ANIQLASH
+            opt_match = option_pattern.match(text)
+            if opt_match and current_question:
+                raw_option_text = opt_match.group(2)
+                
+                # To'g'ri javob ekanligini tekshirish (# belgisi orqali)
+                is_correct = '#' in text 
+                
+                # Matnni tozalash (# ni olib tashlash)
+                clean_option = raw_option_text.replace('#', '').strip()
+                
+                # 🚩 TELEGRAM LIMITI: Variant 100 belgidan oshmasligi kerak
+                if len(clean_option) > 100:
+                    clean_option = clean_option[:97] + "..."
+                
+                # Variantni qo'shish
+                current_question['options'].append(clean_option)
+                
+                # Agar bu to'g'ri javob bo'lsa, matnini saqlab qo'yamiz
+                if is_correct:
+                    current_question['correct_answer_text'] = clean_option
+
+        # Oxirgi savolni ham qo'shib qo'yamiz
+        if current_question:
+            questions.append(current_question)
+            
+        print(f"✅ {len(questions)} ta savol muvaffaqiyatli yuklandi.")
+        return questions
+
+    except Exception as e:
+        print(f"❌ DOCX o'qishda xato: {e}")
+        return []
 
 # -----------------------------------------------------------------------------
 # BOT HANDLERS (BUYRUQLARNI QABUL QILISH)
@@ -344,4 +347,5 @@ if __name__ == '__main__':
         bot.infinity_polling()
     except Exception as e:
         print(f"Bot to'xtadi: {e}")
+
 
