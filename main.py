@@ -1,229 +1,325 @@
 import telebot
 from telebot import types
+from docx import Document
+import random
 import time
-import re
-import random  # Tasodifiy tanlash uchun
-import threading
 import os
-from http.server import HTTPServer, BaseHTTPRequestHandler
+import re
 
-class HealthHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.end_headers()
-        self.wfile.write(b"OK")
+# -----------------------------------------------------------------------------
+# SOZLAMALAR (CONFIG)
+# -----------------------------------------------------------------------------
+# Bot tokenini shu yerga yozing
+BOT_TOKEN = '8507213977:AAG-42Di76mfKtRXSe7WIfPnIrtGBtQUBlw'
 
-def run_healthcheck():
-    port = int(os.environ.get("PORT", 8000))
-    server = HTTPServer(("0.0.0.0", port), HealthHandler)
-    server.serve_forever()
+# DOCX fayl nomi (bot fayli bilan bir papkada bo'lishi kerak)
+DOCX_FILENAME = 'test.docx'
 
-threading.Thread(target=run_healthcheck, daemon=True).start()
-# ==========================================
-# SOZLAMALAR
-# ==========================================
-API_TOKEN = '8262324385:AAGfgpA1GURViIJf4lmoG33IXNfUHOy05HY'
-bot = telebot.TeleBot(API_TOKEN)
+bot = telebot.TeleBot(BOT_TOKEN)
 
-FILE_NAME = 'questions.txt'
-user_data = {}
-active_polls = {}
+# -----------------------------------------------------------------------------
+# FOYDALANUVCHI HOLATI (STATE MANAGEMENT)
+# -----------------------------------------------------------------------------
+# Bu lug'atda har bir foydalanuvchining quiz holati saqlanadi
+# Tuzilishi:
+# users_data[user_id] = {
+#    'questions': [],       # Savollar ro'yxati
+#    'current_index': 0,    # Hozirgi savol raqami
+#    'correct_count': 0,    # To'g'ri javoblar
+#    'start_time': 0,       # Boshlangan vaqt
+#    'total_questions': 0   # Jami savollar soni
+# }
+users_data = {}
 
-class Question:
-    def __init__(self, id, text):
-        self.id = id
-        self.text = text
-        self.options = []
-        self.correct_answer_text = ""  # To'g'ri javob matnini saqlaymiz
+# -----------------------------------------------------------------------------
+# DOCX O'QISH FUNKSIYASI
+# -----------------------------------------------------------------------------
+def load_questions_from_docx(filename):
+    """
+    DOCX fayldan savollarni o'qib, strukturalashgan ko'rinishga keltiradi.
+    """
+    if not os.path.exists(filename):
+        return None
 
-# ==========================================
-# 1. FAYLNI O'QISH VA PARSING QILISH
-# ==========================================
-def load_questions(filename):
+    doc = Document(filename)
     questions = []
-    current_q = None
     
-    try:
-        with open(filename, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
+    current_question = None
+    
+    # Regex na'munalari
+    # 1. , 2. kabi raqam bilan boshlanishini tekshirish
+    question_pattern = re.compile(r'^\d+\.') 
+    # A), B) kabi variantlarni tekshirish
+    option_pattern = re.compile(r'^[A-D]\)')
 
-        for line in lines:
-            line = line.strip()
-            if not line: continue
+    for para in doc.paragraphs:
+        text = para.text.strip()
+        if not text:
+            continue
 
-            # Savolni aniqlash (Masalan: 1. Savol matni?)
-            if re.match(r'^\d+\.', line):
-                if current_q:
-                    questions.append(current_q)
-                
-                q_id = len(questions) + 1
-                current_q = Question(q_id, line)
+        # Agar yangi savol boshlansa (Raqam va nuqta bilan)
+        if question_pattern.match(text):
+            # Eski savolni ro'yxatga qo'shamiz (agar mavjud bo'lsa)
+            if current_question:
+                questions.append(current_question)
+            
+            # Yangi savol obyektini yaratamiz
+            # "1. Savol matni" -> "Savol matni" (raqamni olib tashlaymiz)
+            q_text = re.sub(r'^\d+\.\s*', '', text)
+            current_question = {
+                'text': q_text,
+                'options': [],
+                'correct_option_id': -1 # Hozircha noma'lum
+            }
+        
+        # Agar variant bo'lsa (A), B) ...)
+        elif option_pattern.match(text) and current_question is not None:
+            # To'g'ri javobligini tekshirish (# belgisi borligi)
+            is_correct = '#' in text
+            
+            # Variant matnidan A), B) va # belgilarni tozalash
+            # "A)# Javob" -> "Javob"
+            # 1. A), B) ni olib tashlash
+            opt_text = re.sub(r'^[A-D]\)\s*', '', text)
+            # 2. # ni olib tashlash
+            opt_text = opt_text.replace('#', '').strip()
+            
+            current_question['options'].append({
+                'text': opt_text,
+                'is_correct': is_correct
+            })
 
-            # To'g'ri javobni aniqlash (#)
-            elif '#' in line and current_q:
-                answer_text = line.replace('#', '').strip()
-                current_q.options.append(answer_text)
-                current_q.correct_answer_text = answer_text # To'g'ri matnni eslab qolamiz
+    # Oxirgi savolni qo'shish
+    if current_question:
+        questions.append(current_question)
+        
+    return questions
 
-            # Noto'g'ri javobni aniqlash (•)
-            elif '•' in line and current_q:
-                answer_text = line.replace('•', '').strip()
-                current_q.options.append(answer_text)
-
-        if current_q:
-            questions.append(current_q)
-
-        print(f"{len(questions)} ta savol yuklandi.")
-        return questions
-
-    except FileNotFoundError:
-        print(f"Xatolik: {filename} topilmadi!")
-        return []
-
-ALL_QUESTIONS = load_questions(FILE_NAME)
-
-# ==========================================
-# 2. BOT LOGIKASI
-# ==========================================
+# -----------------------------------------------------------------------------
+# BOT HANDLERS (BUYRUQLARNI QABUL QILISH)
+# -----------------------------------------------------------------------------
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
+    """Start bosilganda menyu chiqaradi"""
+    user_id = message.from_user.id
+    
+    # Eski sessiyani o'chirish
+    if user_id in users_data:
+        del users_data[user_id]
+    
     markup = types.InlineKeyboardMarkup(row_width=2)
-    btn_full = types.InlineKeyboardButton("🚀 To'liq Test (Random)", callback_data='mode_full')
+    btn1 = types.InlineKeyboardButton("To‘liq test (1-92)", callback_data="mode_full")
+    btn2 = types.InlineKeyboardButton("1 - 30", callback_data="mode_1_30")
+    btn3 = types.InlineKeyboardButton("31 - 60", callback_data="mode_31_60")
+    btn4 = types.InlineKeyboardButton("61 - 92", callback_data="mode_61_92")
     
-    buttons = [btn_full]
-    total = len(ALL_QUESTIONS)
-    step = 30
+    markup.add(btn1)
+    markup.add(btn2, btn3, btn4)
     
-    for i in range(0, total, step):
-        start = i + 1
-        end = min(i + step, total)
-        btn_part = types.InlineKeyboardButton(f"📝 {start}-{end} (Random)", callback_data=f'mode_part_{i}_{end}')
-        buttons.append(btn_part)
-
-    markup.add(*buttons)
-    bot.send_message(message.chat.id, "Test rejimini tanlang. Savollar va variantlar aralashtiriladi:", reply_markup=markup)
+    welcome_text = (
+        f"Assalomu alaykum, {message.from_user.first_name}!\n"
+        "SQL va Python bo'yicha Quiz botiga xush kelibsiz.\n\n"
+        "Iltimos, test rejimini tanlang:"
+    )
+    bot.send_message(message.chat.id, welcome_text, reply_markup=markup)
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith('mode_'))
 def start_quiz(call):
+    """Foydalanuvchi rejimni tanlaganda ishga tushadi"""
+    user_id = call.from_user.id
     chat_id = call.message.chat.id
-    mode = call.data
     
-    selected_questions = []
-
-    if mode == 'mode_full':
-        selected_questions = ALL_QUESTIONS.copy()
-        mode_name = "To'liq Test"
-    else:
-        parts = mode.split('_')
-        start_idx = int(parts[2])
-        end_idx = int(parts[3])
-        selected_questions = ALL_QUESTIONS[start_idx:end_idx].copy()
-        mode_name = f"Qisman Test ({start_idx+1}-{end_idx})"
-
-    # 1. SAVOLLARNI ARALASHTIRISH
-    random.shuffle(selected_questions)
-
-    user_data[chat_id] = {
-        'questions': selected_questions,
-        'current_step': 0,
-        'score': 0,
-        'wrong': 0,
-        'start_time': time.time(),
-        'mode_name': mode_name
-    }
-
-    bot.send_message(chat_id, f"<b>{mode_name}</b> boshlandi!", parse_mode='HTML')
-    send_next_question(chat_id)
-
-def send_next_question(chat_id):
-    user = user_data.get(chat_id)
-    if not user: return
-
-    step = user['current_step']
-    questions = user['questions']
-
-    if step >= len(questions):
-        finish_quiz(chat_id)
+    # DOCX faylni yuklash
+    all_questions = load_questions_from_docx(DOCX_FILENAME)
+    
+    if not all_questions:
+        bot.send_message(chat_id, "❌ Xatolik: DOCX fayl topilmadi yoki bo'sh!")
         return
 
-    question = questions[step]
+    # Savollarni tanlangan rejimga qarab ajratish
+    selected_questions = []
+    mode = call.data
     
-    # 2. VARIANTLARNI ARALASHTIRISH
-    shuffled_options = question.options.copy()
-    random.shuffle(shuffled_options)
-    
-    # Aralashgan variantlar ichidan to'g'ri javobning yangi indeksini topish
-    correct_id = shuffled_options.index(question.correct_answer_text)
-
+    # Eslatma: Python list indeksi 0 dan boshlanadi
     try:
-        msg = bot.send_poll(
-            chat_id=chat_id,
-            question=question.text[:300],
-            options=[opt[:100] for opt in shuffled_options], # Telegram limitlari
-            type='quiz',
-            correct_option_id=correct_id,
-            is_anonymous=False
-        )
-        
-        active_polls[msg.poll.id] = {
-            'chat_id': chat_id,
-            'correct_id': correct_id
-        }
-
+        if mode == "mode_full":
+            selected_questions = all_questions[:92] # Hammasini olish
+        elif mode == "mode_1_30":
+            selected_questions = all_questions[0:30]
+        elif mode == "mode_31_60":
+            # Faylda savol yetarli ekanligini tekshirish uchun slice ishlatamiz
+            selected_questions = all_questions[30:60]
+        elif mode == "mode_61_92":
+            selected_questions = all_questions[60:92]
     except Exception as e:
-        bot.send_message(chat_id, f"Xatolik: {e}")
-        user['current_step'] += 1
-        send_next_question(chat_id)
+        bot.send_message(chat_id, "⚠️ Savollarni yuklashda xatolik yuz berdi.")
+        return
 
+    if not selected_questions:
+        bot.send_message(chat_id, "⚠️ Bu oraliqda savollar topilmadi.")
+        return
+
+    # 1. Savollarni aralashtirish (Random Shuffle)
+    random.shuffle(selected_questions)
+
+    # 2. Har bir savol ichidagi variantlarni aralashtirish va to'g'ri javob indeksini aniqlash
+    final_questions = []
+    for q in selected_questions:
+        opts = q['options']
+        # Variantlarni aralashtirish
+        random.shuffle(opts)
+        
+        # To'g'ri javob qaysi indeksga tushganini aniqlash
+        correct_index = -1
+        clean_options = []
+        for idx, opt in enumerate(opts):
+            clean_options.append(opt['text'])
+            if opt['is_correct']:
+                correct_index = idx
+        
+        # Agar to'g'ri javob topilmasa (faylda xato bo'lsa), default 0 qo'yamiz (xatolik oldini olish)
+        if correct_index == -1: 
+            correct_index = 0
+
+        final_questions.append({
+            'text': q['text'],
+            'options': clean_options,
+            'correct_option_id': correct_index
+        })
+
+    # Foydalanuvchi ma'lumotlarini saqlash
+    users_data[user_id] = {
+        'questions': final_questions,
+        'current_index': 0,
+        'correct_count': 0,
+        'start_time': time.time(),
+        'total_questions': len(final_questions)
+    }
+
+    # Birinchi savolni yuborish
+    bot.edit_message_text(chat_id=chat_id, message_id=call.message.message_id, 
+                          text=f"🏁 Test boshlandi! Jami savollar: {len(final_questions)} ta.")
+    send_next_question(chat_id, user_id)
+
+# -----------------------------------------------------------------------------
+# SAVOL YUBORISH LOGIKASI
+# -----------------------------------------------------------------------------
+def send_next_question(chat_id, user_id):
+    user_state = users_data.get(user_id)
+    
+    if not user_state:
+        return
+
+    idx = user_state['current_index']
+    questions = user_state['questions']
+
+    # Agar savollar tugagan bo'lsa, natijani chiqarish
+    if idx >= len(questions):
+        show_results(chat_id, user_id)
+        return
+
+    q = questions[idx]
+    
+    try:
+        # Telegram Poll (Quiz) yuborish
+        # Eslatma: is_anonymous=False bo'lishi kerak, aks holda bot kim javob berganini bilmaydi
+        bot.send_poll(
+            chat_id=chat_id,
+            question=f"{idx + 1}. {q['text']}",
+            options=q['options'],
+            type='quiz',
+            correct_option_id=q['correct_option_id'],
+            is_anonymous=False 
+        )
+    except Exception as e:
+        print(f"Xatolik (Send Poll): {e}")
+        # Xatolik bo'lsa keyingi savolga o'tib ketish
+        user_state['current_index'] += 1
+        send_next_question(chat_id, user_id)
+
+# -----------------------------------------------------------------------------
+# JAVOBLARNI QABUL QILISH (POLL ANSWER)
+# -----------------------------------------------------------------------------
 @bot.poll_answer_handler()
 def handle_poll_answer(poll_answer):
-    poll_id = poll_answer.poll_id
     user_id = poll_answer.user.id
+    user_state = users_data.get(user_id)
     
-    if poll_id in active_polls:
-        poll_info = active_polls[poll_id]
-        chat_id = poll_info['chat_id']
+    # Agar foydalanuvchi bazada bo'lmasa (eski quiz yoki bot qayta yonganda)
+    if not user_state:
+        return
+
+    # Hozirgi savolni olish
+    idx = user_state['current_index']
+    questions = user_state['questions']
+    
+    if idx < len(questions):
+        current_q = questions[idx]
         
-        if chat_id == user_id:
-            user = user_data.get(chat_id)
-            if user:
-                if poll_answer.option_ids[0] == poll_info['correct_id']:
-                    user['score'] += 1
-                else:
-                    user['wrong'] += 1
-                
-                user['current_step'] += 1
-                del active_polls[poll_id]
-                time.sleep(0.5) 
-                send_next_question(chat_id)
+        # Javobni tekshirish
+        # poll_answer.option_ids bu ro'yxat, lekin quizda bitta tanlanadi -> [0]
+        selected_option = poll_answer.option_ids[0]
+        
+        if selected_option == current_q['correct_option_id']:
+            user_state['correct_count'] += 1
+        
+        # Keyingi savolga o'tish
+        user_state['current_index'] += 1
+        
+        # Biroz kutib turib keyingi savolni yuborish (Telegram animatsiyasi tugashi uchun)
+        time.sleep(1) 
+        send_next_question(user_id, user_id) # chat_id sifatida user_id ishlatiladi (private chatda)
 
-def finish_quiz(chat_id):
-    user = user_data.get(chat_id)
-    if not user: return
+# -----------------------------------------------------------------------------
+# NATIJALARNI HISOBLASH VA CHIQARISH
+# -----------------------------------------------------------------------------
+def show_results(chat_id, user_id):
+    user_state = users_data.get(user_id)
+    if not user_state:
+        return
 
-    duration = time.time() - user['start_time']
-    minutes, seconds = divmod(int(duration), 60)
+    end_time = time.time()
+    duration = end_time - user_state['start_time']
     
-    total = len(user['questions'])
-    score = user['score']
-    percent = (score / total) * 100 if total > 0 else 0
+    total = user_state['total_questions']
+    correct = user_state['correct_count']
+    incorrect = total - correct
+    percentage = (correct / total) * 100 if total > 0 else 0
+    
+    # Vaqtni formatlash
+    minutes = int(duration // 60)
+    seconds = int(duration % 60)
+    
+    # Foydalanuvchi ma'lumotlarini olish (chatdan)
+    try:
+        chat_member = bot.get_chat_member(chat_id, user_id)
+        name = chat_member.user.first_name
+    except:
+        name = "Foydalanuvchi"
 
     result_text = (
-        f"🏁 <b>Test yakunlandi!</b>\n\n"
-        f"📋 Rejim: {user['mode_name']}\n"
-        f"⏱ Vaqt: {minutes} daqiqa {seconds} soniya\n"
-        f"✅ To'g'ri: {score}\n"
-        f"❌ Xato: {user['wrong']}\n"
-        f"📊 Natija: {percent:.1f}%"
+        f"🏁 <b>TEST YAKUNLANDI!</b>\n\n"
+        f"👤 <b>Foydalanuvchi:</b> {name}\n"
+        f"📊 <b>Umumiy savollar:</b> {total} ta\n"
+        f"✅ <b>To‘g‘ri javoblar:</b> {correct} ta\n"
+        f"❌ <b>Xato javoblar:</b> {incorrect} ta\n"
+        f"📈 <b>Natija:</b> {percentage:.1f}%\n"
+        f"⏱ <b>Sarflangan vaqt:</b> {minutes} daq {seconds} sek\n\n"
+        f"Qayta ishlash uchun /start ni bosing."
     )
-
+    
     bot.send_message(chat_id, result_text, parse_mode='HTML')
     
-    markup = types.InlineKeyboardMarkup()
-    markup.add(types.InlineKeyboardButton("🔄 Qayta boshlash", callback_data="restart"))
-    bot.send_message(chat_id, "Yana urinib ko'rasizmi?", reply_markup=markup)
-    del user_data[chat_id]
+    # Xotirani tozalash
+    del users_data[user_id]
 
+# -----------------------------------------------------------------------------
+# BOTNI ISHGA TUSHIRISH
+# -----------------------------------------------------------------------------
 if __name__ == '__main__':
-    bot.polling(none_stop=True)
+    print("Bot ishga tushdi...")
+    try:
+        bot.infinity_polling()
+    except Exception as e:
+        print(f"Bot to'xtadi: {e}")
