@@ -5,6 +5,27 @@ import random
 import time
 import os
 import re
+import threading
+from http.server import BaseHTTPRequestHandler, HTTPServer
+# -----------------------------------------------------------------------------
+# HEALTH CHECK (KOYEB UCHUN)
+# -----------------------------------------------------------------------------
+class HealthHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path in ["/", "/health"]:
+            self.send_response(200)
+            self.send_header("Content-type", "text/plain")
+            self.end_headers()
+            self.wfile.write(b"OK")
+        else:
+            self.send_response(404)
+            self.end_headers()
+
+
+def run_health_server():
+    port = int(os.environ.get("PORT", 8000))
+    server = HTTPServer(("0.0.0.0", port), HealthHandler)
+    server.serve_forever()
 
 # -----------------------------------------------------------------------------
 # SOZLAMALAR (CONFIG)
@@ -323,3 +344,4 @@ if __name__ == '__main__':
         bot.infinity_polling()
     except Exception as e:
         print(f"Bot to'xtadi: {e}")
+
